@@ -55,6 +55,18 @@
             android:text="—"
             android:maxLines="1" />
 
+        <!-- 调试版本号（开发时显示） -->
+        <TextView
+            android:id="@+id/versionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#40FFFFFF"
+            android:textSize="10sp"
+            android:letterSpacing="0.02"
+            android:paddingStart="8dp"
+            android:paddingEnd="4dp"
+            android:alpha="0.6" />
+
         <!-- 网格开关 -->
         <ImageButton
             android:id="@+id/gridToggle"

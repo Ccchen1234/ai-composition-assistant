@@ -6,7 +6,9 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.aicomp.BuildConfig
 import com.aicomp.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -230,6 +232,9 @@ class SettingsActivity : AppCompatActivity() {
                     false
                 }
             }
+
+            // 显示应用版本
+            findPreference<Preference>("app_version")?.summary = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
         }
 
         private fun maskApiKey(key: String): String {

@@ -154,4 +154,15 @@
 
     </PreferenceCategory>
 
+    <!-- ====== 关于 ====== -->
+    <PreferenceCategory
+        android:title="关于">
+
+        <Preference
+            android:key="app_version"
+            android:title="应用版本"
+            android:selectable="false" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

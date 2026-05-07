@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var zoomRatioText: TextView
 
     // 手动对焦 UI
-    private lateinit var focusModeToggle: ImageButton
+    private lateinit var focusModeToggle: View
     private lateinit var focusControlContainer: LinearLayout
     private lateinit var focusSeekBar: SeekBar
     private lateinit var focusModeLabel: TextView

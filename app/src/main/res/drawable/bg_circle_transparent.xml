@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    性冷淡风格：引导箭头背景圆
+    极细描边，无填充，轻盈不遮挡
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <stroke
+        android:width="0.5dp"
+        android:color="#2C2C2C" />
+    <size
+        android:width="64dp"
+        android:height="64dp" />
+</shape>

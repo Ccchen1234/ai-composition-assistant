@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    性冷淡风格：顶部极细边缘晕染
+    极轻渐变 — 只在最顶部 120dp 范围内过渡，不遮挡画面
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#66000000"
+        android:endColor="#00000000"
+        android:angle="270"
+        android:tileMode="clamp" />
+    <size android:height="120dp" />
+</shape>

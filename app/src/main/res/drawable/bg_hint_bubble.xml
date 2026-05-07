@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    性冷淡风格：玻璃卡片
+    极低透明度背景 + 极细描边，克制而不喧宾夺主
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- 玻璃底：低透明度深色 -->
+    <solid android:color="#A0181818" />
+    <!-- 细描边：几乎不可见 -->
+    <stroke
+        android:width="0.5dp"
+        android:color="#2C2C2C" />
+    <!-- 微圆角：保留现代感但不刻意 -->
+    <corners android:radius="8dp" />
+</shape>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        ══════════════════════════════════════════════
+        性冷淡风格（Neo-Brutalist Minimal）主题
+        ══════════════════════════════════════════════
+    -->
+
+    <!-- 主相机界面：近黑背景，状态栏沉浸 -->
+    <style name="Theme.AIComposition" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/neo_bg</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/neo_bg</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="colorPrimary">@color/neo_accent</item>
+        <item name="colorOnPrimary">@color/neo_bg</item>
+        <item name="colorPrimaryContainer">@color/neo_accent_glow</item>
+        <item name="colorSecondary">@color/neo_accent</item>
+    </style>
+
+    <!-- 设置界面 -->
+    <style name="Theme.Settings" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">@color/settings_bg</item>
+        <item name="android:statusBarColor">@color/settings_bg</item>
+        <item name="android:navigationBarColor">@color/settings_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <item name="android:textColorPrimary">@color/settings_text_primary</item>
+        <item name="android:textColorSecondary">@color/settings_text_secondary</item>
+        <item name="android:textColorHint">@color/settings_text_hint</item>
+
+        <item name="colorPrimary">@color/settings_accent</item>
+        <item name="colorOnPrimary">@color/settings_text_primary</item>
+        <item name="colorSecondary">@color/neo_accent</item>
+
+        <item name="preferenceTheme">@style/Theme.Settings.PreferenceTheme</item>
+        <item name="actionBarStyle">@style/Theme.Settings.ActionBar</item>
+    </style>
+
+    <style name="Theme.Settings.ActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@color/settings_surface</item>
+        <item name="titleTextStyle">@style/Theme.Settings.ActionBar.Title</item>
+    </style>
+
+    <style name="Theme.Settings.ActionBar.Title" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">@color/settings_text_primary</item>
+    </style>
+
+    <style name="Theme.Settings.PreferenceTheme" parent="PreferenceThemeOverlay">
+        <item name="preferenceCategoryStyle">@style/Theme.Settings.CategoryTitle</item>
+    </style>
+
+    <style name="Theme.Settings.CategoryTitle" parent="Preference.Category" />
+
+    <!-- 灵敏度按钮：性冷淡版本 -->
+    <style name="Widget.AIComposition.Button.Tonal" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/neo_text_hint</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="rippleColor">@color/neo_accent_dim</item>
+    </style>
+</resources>

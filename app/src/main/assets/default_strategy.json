@@ -1,0 +1,626 @@
+{
+  "version": "3.0",
+  "lastUpdated": "2026-04-17",
+  "scenes": {
+    "selfie": {
+      "description": "自拍",
+      "constraints": {
+        "face_y_range": [0.20, 0.45],
+        "face_size_range": [0.15, 0.35],
+        "head_top_margin_ratio": 0.12,
+        "ideal_ev_offset": 0,
+        "max_roll_angle": 5,
+        "rule_of_thirds_weight": 0.6
+      },
+      "camera_hints": { "preferred_zoom": 1.0, "exposure_compensation_range": [-1, 2] },
+      "feedback_library": {
+        "values": [
+          "45度侧脸，下巴微收显脸小",
+          "单手托腮，歪头微笑",
+          "举起手机俯拍，眼睛更大更显瘦",
+          "用手撩头发的瞬间抓拍",
+          "闭眼微笑，自然放松不做作",
+          "比心手势放在脸颊旁",
+          "双手捧脸卖萌，眼睛看镜头",
+          "侧脸望向45度远方，文艺感",
+          "手指比V放在眼睛旁",
+          "墨镜推到头顶，酷酷的表情",
+          "回头的瞬间抓拍，最有灵动感",
+          "咬吸管/棒棒糖，俏皮可爱",
+          "双手举起手机假装在自拍的自拍",
+          "一只手遮住半边脸，只露一只眼"
+        ]
+      },
+      "tips": [
+        "手机略高于眼睛，45度俯拍最显瘦",
+        "光源在正面偏上45度最自然",
+        "避免下巴正对镜头，微微侧转更立体",
+        "眼睛看向镜头上方的前置摄像头位置",
+        "用三分法把脸放在交叉点上"
+      ]
+    },
+    "seaside_sunset": {
+      "description": "海边日落人像",
+      "constraints": {
+        "foot_y_range": [0.80, 0.95],
+        "head_top_margin_ratio": 0.12,
+        "horizon_y_range": [0.35, 0.50],
+        "subject_width_range": [0.20, 0.40],
+        "ideal_ev_offset": -1,
+        "max_roll_angle": 3,
+        "rule_of_thirds_weight": 1.0
+      },
+      "camera_hints": { "preferred_zoom": 1.0, "exposure_compensation_range": [-2, 0] },
+      "feedback_library": {
+        "values": [
+          "侧身面向夕阳，回头看镜头，发丝被光照亮",
+          "裙摆随风飘动，双手微张像在拥抱大海",
+          "背对镜头看海，拍出剪影效果",
+          "蹲下仰拍，让晚霞占满天空",
+          "沿着海岸线慢走，抓拍自然步态",
+          "脚丫踩在沙滩上，俯拍脚部特写",
+          "闭眼感受海风，等发丝飘起的瞬间",
+          "把鞋子拎在手上，赤脚走在沙滩上",
+          "坐在礁石上，双腿交叉望远方",
+          "跳跃起来，裙摆飞扬的定格瞬间",
+          "面朝大海张开双臂，拍背影",
+          "在海边荡秋千的侧影"
+        ]
+      },
+      "tips": [
+        "日落前30分钟是黄金时段，光线最柔和",
+        "逆光拍摄降低1-2档曝光，保留天空色彩",
+        "让太阳在人物侧后方，形成金色轮廓光",
+        "穿白色/浅色长裙与金色光线最搭",
+        "开启HDR保留高光和暗部细节"
+      ]
+    },
+    "flower_field": {
+      "description": "花海人像",
+      "constraints": {
+        "foot_y_range": [0.75, 0.90],
+        "head_top_margin_ratio": 0.10,
+        "subject_width_range": [0.25, 0.45],
+        "ideal_ev_offset": 0,
+        "max_roll_angle": 5,
+        "rule_of_thirds_weight": 0.9
+      },
+      "camera_hints": { "preferred_zoom": 2.0, "exposure_compensation_range": [-1, 1] },
+      "feedback_library": {
+        "values": [
+          "蹲在花丛中，从花的缝隙里探出头",
+          "低头闻花香，45度侧脸最美",
+          "背对镜头走进花海深处，拍意境",
+          "双手捧一束花，仰头微笑",
+          "用前景花朵做虚化框架构图",
+          "躺在花丛中，俯拍以天空为背景",
+          "穿花裙子在花海中转圈，裙摆飞扬",
+          "摘一朵花别在耳后",
+          "手轻轻拨开花丛走向镜头",
+          "站在花海中央，双手背在身后",
+          "戴草帽在花田里，阳光透过帽檐",
+          "蹲下和花朵平视，拍侧脸轮廓"
+        ]
+      },
+      "tips": [
+        "2倍变焦可压缩花海层次，人花融合",
+        "前景放几朵虚化花增加纵深感",
+        "穿纯色衣服（白/红/蓝）在花海最醒目",
+        "阴天或早晚光线最柔和，避免正午"
+      ]
+    },
+    "forest_path": {
+      "description": "林间小路人像",
+      "constraints": {
+        "foot_y_range": [0.80, 0.92],
+        "head_top_margin_ratio": 0.08,
+        "subject_width_range": [0.20, 0.35],
+        "ideal_ev_offset": 1,
+        "max_roll_angle": 3,
+        "rule_of_thirds_weight": 1.0
+      },
+      "camera_hints": { "preferred_zoom": 1.5, "exposure_compensation_range": [0, 2] },
+      "feedback_library": {
+        "values": [
+          "沿着小路慢慢走远，拍背影渐行渐远",
+          "靠在树干上，一条腿微曲交叉",
+          "抬头看树冠漏下的光斑",
+          "双手插兜走路，抓拍侧脸轮廓",
+          "坐在树根或倒木上，双脚交叉",
+          "透过树叶缝隙拍，斑驳光影洒在脸上",
+          "捡一片落叶挡半边脸，文艺范",
+          "抱住大树，探出半个身子看镜头",
+          "蹲下看地上的落叶",
+          "站在两排树中间，纵深感构图",
+          "骑自行车穿行林间小道",
+          "用树枝做一个花环戴头上"
+        ]
+      },
+      "tips": [
+        "林间光线暗，适当提高曝光补偿+1",
+        "寻找光束穿过树叶的丁达尔效应",
+        "穿暖色系（红/橙）与绿叶对比最强烈",
+        "利用树林纵深做引导线构图"
+      ]
+    },
+    "city_street": {
+      "description": "城市街拍人像",
+      "constraints": {
+        "foot_y_range": [0.78, 0.92],
+        "head_top_margin_ratio": 0.10,
+        "subject_width_range": [0.25, 0.45],
+        "ideal_ev_offset": 0,
+        "max_roll_angle": 5,
+        "rule_of_thirds_weight": 0.8
+      },
+      "camera_hints": { "preferred_zoom": 1.0, "exposure_compensation_range": [-1, 1] },
+      "feedback_library": {
+        "values": [
+          "靠在涂鸦墙前，酷酷的表情",
+          "过斑马线时回头抓拍，动态感",
+          "坐在台阶上，双腿自然伸展",
+          "利用橱窗玻璃的倒影构图",
+          "咖啡店门口端着杯子的街拍",
+          "路灯下仰头看灯光，光影打在脸上",
+          "骑共享单车抓拍，风吹头发",
+          "背靠栏杆，城市天际线做背景",
+          "在天桥上拍车流做背景",
+          "蹲在路边看手机，自然日常感",
+          "便利店门口喝汽水",
+          "在地铁站台/车厢内拍都市感",
+          "举着冰淇淋/奶茶对镜头笑",
+          "在斑马线中间回头的瞬间（注意安全）"
+        ]
+      },
+      "tips": [
+        "利用建筑线条做引导线",
+        "橱窗/玻璃做镜面倒影构图",
+        "穿简洁利落的都市风穿搭",
+        "夜景街拍用路灯做光源，别用闪光灯",
+        "雨天积水倒影是绝佳拍摄素材"
+      ]
+    },
+    "ancient_town": {
+      "description": "古镇/古建筑人像",
+      "constraints": {
+        "foot_y_range": [0.78, 0.90],
+        "head_top_margin_ratio": 0.08,
+        "subject_width_range": [0.20, 0.35],
+        "ideal_ev_offset": 0,
+        "max_roll_angle": 3,
+        "rule_of_thirds_weight": 1.0
+      },
+      "camera_hints": { "preferred_zoom": 1.5, "exposure_compensation_range": [-1, 1] },
+      "feedback_library": {
+        "values": [
+          "撑一把油纸伞，回眸一笑",
+          "坐在石阶上，手托下巴看远方",
+          "推开古朴木门的瞬间抓拍",
+          "在拱门/圆门框架中构图，天然画框",
+          "趴在石栏杆上看水/风景",
+          "走在青石板路上的背影",
+          "窗棂光影打在脸上，光影感",
+          "手扶墙壁侧身而立",
+          "坐在乌篷船/小船上的侧影",
+          "在灯笼巷里仰头看灯笼",
+          "茶馆里端着盖碗茶",
+          "走在雨巷中撑伞的意境照"
+        ]
+      },
+      "tips": [
+        "利用门框/拱门做天然画框构图",
+        "穿汉服/旗袍/棉麻裙与古镇最搭",
+        "找纵深感强的巷子做引导线",
+        "雨天石板路反光是绝佳拍摄时机"
+      ]
+    },
+    "snow_scene": {
+      "description": "雪景人像",
+      "constraints": {
+        "foot_y_range": [0.82, 0.95],
+        "head_top_margin_ratio": 0.15,
+        "subject_width_range": [0.15, 0.30],
+        "ideal_ev_offset": 1,
+        "max_roll_angle": 2,
+        "rule_of_thirds_weight": 1.0
+      },
+      "camera_hints": { "preferred_zoom": 1.0, "exposure_compensation_range": [0, 2] },
+      "feedback_library": {
+        "values": [
+          "张开双臂拥抱雪山",
+          "扔起一把雪花抓拍空中飞舞的雪",
+          "戴红色围巾在白雪山最醒目",
+          "蹲下堆雪人的侧脸",
+          "雪地上躺出一个大字俯拍",
+          "仰拍让雪山做宏伟背景",
+          "哈气制造雾气效果",
+          "戴毛线帽裹围巾，只露眼睛",
+          "捧着雪球假装要丢镜头",
+          "在雪地里奔跑回头笑",
+          "戴手套比心",
+          "踩在厚厚的雪上留下脚印"
+        ]
+      },
+      "tips": [
+        "雪地反光强，增加+1~2档曝光补偿",
+        "穿红色/橙色在白色世界最跳",
+        "雪山做背景时人要小才显壮阔",
+        "手机注意保暖，低温掉电极快"
+      ]
+    },
+    "grassland": {
+      "description": "草原/田野人像",
+      "constraints": {
+        "foot_y_range": [0.75, 0.88],
+        "head_top_margin_ratio": 0.12,
+        "subject_width_range": [0.20, 0.40],
+        "ideal_ev_offset": 0,
+        "max_roll_angle": 5,
+        "rule_of_thirds_weight": 0.9
+      },
+      "camera_hints": { "preferred_zoom": 1.0, "exposure_compensation_range": [-1, 1] },
+      "feedback_library": {
+        "values": [
+          "奔跑在草原上，抓拍动感瞬间",
+          "坐在草地上望远方，沉思状",
+          "戴草帽侧身站立，风吹帽檐",
+          "躺在草丛中仰拍天空",
+          "风吹头发的瞬间抓拍",
+          "双手背在身后走路",
+          "向着地平线走远的背影",
+          "在油菜花田里穿白裙",
+          "骑马/牵马的草原风情照",
+          "躺在草地上看书",
+          "抛起草帽的瞬间",
+          "在麦田里奔跑，裙摆飞扬"
+        ]
+      },
+      "tips": [
+        "草原无遮挡，黄金时段（日出日落）最佳",
+        "风吹动头发和裙摆是最自然的动态",
+        "低角度仰拍让草地做前景更壮观",
+        "穿白色/浅蓝色与绿色草原最和谐"
+      ]
+    },
+    "cafe_indoor": {
+      "description": "咖啡店/室内人像",
+      "constraints": {
+        "face_y_range": [0.25, 0.45],
+        "subject_width_range": [0.35, 0.60],
+        "ideal_ev_offset": 1,
+        "max_roll_angle": 5,
+        "rule_of_thirds_weight": 0.6
+      },
+      "camera_hints": { "preferred_zoom": 2.0, "exposure_compensation_range": [0, 2] },
+      "feedback_library": {
+        "values": [
+          "手捧咖啡杯看向窗外，侧脸轮廓",
+          "翻书时的侧脸抓拍，知性美",
+          "倚在窗边，自然光打在脸上",
+          "双手托腮看镜头，俏皮可爱",
+          "低头看手机的自然瞬间",
+          "和甜品合影假装品尝",
+          "坐在高脚凳上翘二郎腿",
+          "对着镜头举起咖啡杯干杯",
+          "在书架前假装选书",
+          "对着镜头比OK手势",
+          "双手捂着热杯子暖手",
+          "戴耳机听歌闭眼享受"
+        ]
+      },
+      "tips": [
+        "找靠窗位置，自然光最柔和最美",
+        "2倍变焦拍半身特写，背景自然虚化",
+        "室内光线暗，注意手要稳防抖",
+        "道具很重要：咖啡杯/书/花/墨镜/耳机"
+      ]
+    },
+    "night_city": {
+      "description": "夜景人像",
+      "constraints": {
+        "foot_y_range": [0.78, 0.90],
+        "head_top_margin_ratio": 0.10,
+        "subject_width_range": [0.20, 0.40],
+        "ideal_ev_offset": 0,
+        "max_roll_angle": 3,
+        "rule_of_thirds_weight": 0.8
+      },
+      "camera_hints": { "preferred_zoom": 1.0, "exposure_compensation_range": [-1, 1] },
+      "feedback_library": {
+        "values": [
+          "霓虹灯下的回眸，色彩斑斓",
+          "用手遮挡灯串做前景虚化光斑",
+          "背对镜头看城市万家灯火",
+          "在光斑背景前拍半身特写",
+          "举起手机假装在拍夜景",
+          "路灯下的影子创意构图",
+          "车流光轨做背景，人物清晰",
+          "天桥上俯拍车水马龙",
+          "手拿仙女棒/烟火棒",
+          "对着镜头吹出一口热气",
+          "在灯光隧道中走向镜头",
+          "橱窗灯光映在脸上的光影"
+        ]
+      },
+      "tips": [
+        "找有灯串/霓虹灯的地方做梦幻背景",
+        "大光圈模式制造光斑效果",
+        "别用闪光灯，环境光源更自然",
+        "穿有亮片/反光材质的衣服增加亮点"
+      ]
+    },
+    "mountain_view": {
+      "description": "山顶/观景台人像",
+      "constraints": {
+        "foot_y_range": [0.82, 0.95],
+        "head_top_margin_ratio": 0.18,
+        "subject_width_range": [0.12, 0.25],
+        "ideal_ev_offset": 0,
+        "max_roll_angle": 2,
+        "rule_of_thirds_weight": 1.0
+      },
+      "camera_hints": { "preferred_zoom": 1.0, "exposure_compensation_range": [-1, 1] },
+      "feedback_library": {
+        "values": [
+          "站在观景台边缘张开双臂拥抱天地",
+          "背对镜头看云海翻涌",
+          "坐在安全处的平台上，双腿悬空",
+          "指向前方壮丽风景的背影",
+          "登顶后举起双手庆祝",
+          "利用栏杆做引导线构图",
+          "云雾飘过时抓拍仙气感",
+          "举起登山杖指向天空",
+          "站在路牌/海拔标志旁合影",
+          "迎风站立头发飘扬"
+        ]
+      },
+      "tips": [
+        "人在画面中要小，风景才是主角",
+        "等云雾飘过时抓拍最有氛围感",
+        "广角展现壮阔感",
+        "注意安全，别为了拍照冒险"
+      ]
+    },
+    "cherry_blossom": {
+      "description": "樱花/桃花人像",
+      "constraints": {
+        "foot_y_range": [0.78, 0.92],
+        "head_top_margin_ratio": 0.05,
+        "subject_width_range": [0.25, 0.40],
+        "ideal_ev_offset": 0,
+        "max_roll_angle": 5,
+        "rule_of_thirds_weight": 0.8
+      },
+      "camera_hints": { "preferred_zoom": 2.0, "exposure_compensation_range": [0, 1] },
+      "feedback_library": {
+        "values": [
+          "仰头看樱花，花瓣飘落在脸上",
+          "伸手接住飘落的花瓣",
+          "站在樱花树下，花枝做前景",
+          "捧一把花瓣抛向空中",
+          "背靠樱花树干坐下",
+          "在樱花大道上回眸",
+          "用樱花枝挡半边脸",
+          "戴发夹/花环与樱花呼应",
+          "跳起来触碰花枝",
+          "坐在樱花树下的长椅上"
+        ]
+      },
+      "tips": [
+        "2倍焦段压缩樱花层次感",
+        "穿浅色（白/粉/浅蓝）与樱花和谐",
+        "微风时花瓣飘落是最佳抓拍时机",
+        "仰拍以花为天，俯拍以花为地"
+      ]
+    },
+    "rainy_day": {
+      "description": "雨天人像",
+      "constraints": {
+        "foot_y_range": [0.78, 0.90],
+        "head_top_margin_ratio": 0.10,
+        "subject_width_range": [0.25, 0.40],
+        "ideal_ev_offset": 1,
+        "max_roll_angle": 5,
+        "rule_of_thirds_weight": 0.8
+      },
+      "camera_hints": { "preferred_zoom": 1.0, "exposure_compensation_range": [0, 2] },
+      "feedback_library": {
+        "values": [
+          "撑透明雨伞，看雨滴滑落",
+          "踩水坑溅起水花的瞬间",
+          "在屋檐下躲雨看雨景",
+          "戴帽子在雨中奔跑",
+          "用手接雨水的特写",
+          "玻璃窗上的雨滴做前景虚化",
+          "雨后积水倒影构图",
+          "穿雨靴在雨中漫步",
+          "路灯下看雨丝",
+          "在便利店门口等雨停"
+        ]
+      },
+      "tips": [
+        "雨天光线柔和，肤色最自然",
+        "积水倒影是天然镜面构图",
+        "增加曝光补偿+1补偿暗光",
+        "透明雨伞是最佳道具"
+      ]
+    },
+    "rooftop_sunset": {
+      "description": "天台/楼顶日落",
+      "constraints": {
+        "foot_y_range": [0.80, 0.92],
+        "head_top_margin_ratio": 0.12,
+        "subject_width_range": [0.20, 0.35],
+        "ideal_ev_offset": -1,
+        "max_roll_angle": 3,
+        "rule_of_thirds_weight": 1.0
+      },
+      "camera_hints": { "preferred_zoom": 1.0, "exposure_compensation_range": [-2, 0] },
+      "feedback_library": {
+        "values": [
+          "逆光站立，夕阳做轮廓光",
+          "坐在天台边缘（安全处）望城市",
+          "张开双臂拥抱晚霞",
+          "背影配城市天际线",
+          "举起手机拍日落的动作",
+          "侧脸轮廓在夕阳中最美",
+          "天台栏杆做引导线构图",
+          "风吹头发的逆光剪影",
+          "坐在地上望天空的仰拍",
+          "和朋友举杯看日落"
+        ]
+      },
+      "tips": [
+        "逆光降低曝光保天空色彩",
+        "剪影效果：人脸朝向太阳",
+        "日落前后20分钟光线最梦幻",
+        "穿宽松长裙逆光最有仙气"
+      ]
+    },
+    "bookstore_library": {
+      "description": "书店/图书馆",
+      "constraints": {
+        "face_y_range": [0.25, 0.50],
+        "subject_width_range": [0.30, 0.50],
+        "ideal_ev_offset": 1,
+        "max_roll_angle": 5,
+        "rule_of_thirds_weight": 0.6
+      },
+      "camera_hints": { "preferred_zoom": 2.0, "exposure_compensation_range": [0, 2] },
+      "feedback_library": {
+        "values": [
+          "站在书架前选书的侧影",
+          "坐在地上靠着书架看书",
+          "从书架缝隙中露出一只眼",
+          "双手捧着书挡住脸",
+          "抬头看书架最高处",
+          "在旋转楼梯上俯拍",
+          "坐在窗边读书的剪影",
+          "书架做纵深引导线构图",
+          "戴眼镜看书的知性美",
+          "抱着一摞书走过书架"
+        ]
+      },
+      "tips": [
+        "找纵深感强的书架走廊",
+        "暖色灯光营造温馨阅读氛围",
+        "大光圈虚化背景书籍",
+        "安静环境适合抓拍自然表情"
+      ]
+    },
+    "amusement_park": {
+      "description": "游乐园/主题乐园",
+      "constraints": {
+        "foot_y_range": [0.75, 0.90],
+        "head_top_margin_ratio": 0.10,
+        "subject_width_range": [0.25, 0.45],
+        "ideal_ev_offset": 0,
+        "max_roll_angle": 5,
+        "rule_of_thirds_weight": 0.7
+      },
+      "camera_hints": { "preferred_zoom": 1.0, "exposure_compensation_range": [-1, 1] },
+      "feedback_library": {
+        "values": [
+          "站在旋转木马前比耶",
+          "举着棉花糖/气球对镜头笑",
+          "坐过山车时的抓拍表情",
+          "在摩天轮前拍全身照",
+          "戴卡通头饰卖萌",
+          "和卡通人物合影互动",
+          "站在彩色建筑前跳跃",
+          "骑旋转咖啡杯里的笑脸",
+          "戴墨镜拿冰淇淋酷酷的",
+          "在灯光秀前拍夜景人像"
+        ]
+      },
+      "tips": [
+        "色彩丰富的场景适合活泼穿搭",
+        "抓拍真实笑容比摆拍更好",
+        "道具很重要：气球/棉花糖/头饰",
+        "利用游乐园的色彩做撞色构图"
+      ]
+    },
+    "street_food": {
+      "description": "美食街/小吃摊",
+      "constraints": {
+        "face_y_range": [0.20, 0.50],
+        "subject_width_range": [0.30, 0.50],
+        "ideal_ev_offset": 0,
+        "max_roll_angle": 5,
+        "rule_of_thirds_weight": 0.6
+      },
+      "camera_hints": { "preferred_zoom": 1.5, "exposure_compensation_range": [0, 1] },
+      "feedback_library": {
+        "values": [
+          "举着烤串/小吃对镜头张大嘴",
+          "双手捧着大碗美食",
+          "咬一口食物的表情抓拍",
+          "在烟火气中回头笑",
+          "站在摊位前指点菜品",
+          "举着两串糖葫芦比V",
+          "坐在路边小凳上吃面",
+          "和热腾腾的蒸汽合影",
+          "手拿冰淇淋滴下来的瞬间",
+          "排队等美食的背影"
+        ]
+      },
+      "tips": [
+        "烟火气/蒸汽增加生活感",
+        "抓拍吃东西的表情比摆拍自然",
+        "暖色灯光让食物更诱人",
+        "2倍变焦聚焦人物和食物"
+      ]
+    }
+  },
+  "global": {
+    "stability_threshold": 0.5,
+    "min_shutter_lock_ms": 400,
+    "max_ai_interval_ms": 5000,
+    "min_ai_interval_ms": 1000,
+    "composition_score_threshold": 75,
+    "universal_posing_rules": [
+      "侧身比正面更显瘦，45度侧身最佳",
+      "下巴微收避免双下巴，同时脖子会更修长",
+      "手臂不要紧贴身体，留空隙显瘦",
+      "重心放在一条腿上，另一条微曲更自然",
+      "手有事做：摸头发/扶帽子/插兜/拿道具",
+      "避免双脚并拢直立，交叉或前后站更有型",
+      "肩膀微微侧转比正对镜头好看",
+      "眼睛看的方向留出更多空间（视线延伸法则）",
+      "挺胸收腹提臀，体态好照片就好",
+      "笑容自然最重要，想开心的事再笑",
+      "深呼吸放松肩膀，别耸肩",
+      "手指自然弯曲，别用力伸直"
+    ],
+    "common_mistakes": [
+      "头顶长树/电线杆（前景物体与头部重叠）",
+      "脚被裁切（全身照必须露出完整脚）",
+      "人在画面正中间（三分法更美观）",
+      "地平线歪斜（用水平仪纠正）",
+      "脸部大面积阴影（找柔和光源或换个方向）",
+      "背景太杂乱（靠近主体或大光圈虚化）",
+      "剪刀手/僵硬pose（抓拍自然瞬间更好）",
+      "脖子前伸显得没精神",
+      "手臂挤压身体显胖",
+      "双手无处安放（给个道具）"
+    ],
+    "lighting_rules": [
+      "黄金时段（日出后/日落前30分钟）光线最柔和",
+      "阴天是天然柔光箱，拍人像最均匀",
+      "正午阳光直射避免拍人像，阴影太硬",
+      "逆光拍摄降低曝光保轮廓光",
+      "顺光拍摄皮肤最细腻但缺乏立体感",
+      "侧光45度最有立体感和层次感",
+      "室内找窗户光，侧对窗户最美"
+    ],
+    "composition_advanced": [
+      "前景虚化增加层次感（花/叶/栏杆做前景）",
+      "引导线构图：路/栏杆/建筑线条指向人物",
+      "框架构图：门/窗/拱门做天然画框",
+      "对称构图：水面倒影/建筑对称",
+      "留白构图：大面积天空/墙面留白",
+      "对角线构图：人物沿对角线放置",
+      "填充构图：人物充满画面，适合特写"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    性冷淡风格：底部极细边缘晕染
+    仅在底部 140dp 范围内过渡，保留相机画面主体
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#00000000"
+        android:endColor="#55000000"
+        android:angle="270"
+        android:tileMode="clamp" />
+    <size android:height="140dp" />
+</shape>

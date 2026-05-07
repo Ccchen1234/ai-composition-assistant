@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ══════════════════════════════════════════════
+         性冷淡风格（Neo-Brutalist Minimal）配色体系
+         核心理念：去装饰化 · 单一冷调点缀 · 极克制
+         ══════════════════════════════════════════════ -->
+
+    <!-- ──── 背景层 ──── -->
+    <color name="neo_bg">#0D0D0D</color>          <!-- 主背景：近黑 -->
+    <color name="neo_surface">#181818</color>       <!-- 表面：略浅于背景 -->
+    <color name="neo_surface_glass">#1E1E1E</color>  <!-- 玻璃面板背景 -->
+    <color name="neo_surface_elevated">#242424</color> <!-- 悬浮元素背景 -->
+
+    <!-- ──── 文字 ──── -->
+    <color name="neo_text_primary">#F0F0F0</color>    <!-- 主文字：近白 -->
+    <color name="neo_text_secondary">#707070</color>  <!-- 次要文字：中灰 -->
+    <color name="neo_text_hint">#4A4A4A</color>      <!-- 提示文字：暗灰 -->
+
+    <!-- ──── 唯一强调色 ──── -->
+    <color name="neo_accent">#5AC8C8</color>         <!-- 冷青（主强调，唯一高饱和色） -->
+    <color name="neo_accent_dim">#2A6060</color>      <!-- 暗青（次要强调/背景状态） -->
+    <color name="neo_accent_glow">#1A4040</color>      <!-- 青光晕（glow效果） -->
+
+    <!-- ──── 构图元素 ──── -->
+    <color name="neo_grid">#2C2C2C</color>           <!-- 九宫格线：极细暗灰 -->
+    <color name="neo_cross">#404040</color>          <!-- 交叉点：细十字 -->
+    <color name="neo_box_primary">#5AC8C8</color>    <!-- 构图框主色：青 -->
+    <color name="neo_box_secondary">#808080</color>  <!-- 构图框次色：灰 -->
+    <color name="neo_box_error">#B06050</color>     <!-- 构图框错误：暗陶土 -->
+
+    <!-- ──── 状态色（克制版） ──── -->
+    <color name="neo_success">#6A9A7A</color>      <!-- 成功：暗薄荷 -->
+    <color name="neo_warn">#A08860</color>          <!-- 警告：暗琥珀 -->
+    <color name="neo_error">#B06060</color>         <!-- 错误：暗珊瑚 -->
+    <color name="neo_info">#5A7A9A</color>          <!-- 信息：暗蓝灰 -->
+
+    <!-- ──── UI 元素 ──── -->
+    <color name="neo_divider">#1F1F1F</color>        <!-- 分割线 -->
+    <color name="neo_icon">#C0C0C0</color>           <!-- 图标：淡灰 -->
+    <color name="neo_icon_dim">#606060</color>      <!-- 图标禁用态 -->
+
+    <!-- ──── 按钮 ──── -->
+    <color name="neo_btn_bg">#2A2A2A</color>         <!-- 按钮背景 -->
+    <color name="neo_btn_active_bg">#1E3030</color> <!-- 按钮激活背景（带青色调） -->
+    <color name="neo_btn_text">#E0E0E0</color>       <!-- 按钮文字 -->
+    <color name="neo_capture_ring">#E0E0E0</color>    <!-- 拍照按钮：细白环 -->
+
+    <!-- ──── 覆盖层透明度预设 ──── -->
+    <color name="neo_overlay_heavy">#CC000000</color>  <!-- 80% 黑 -->
+    <color name="neo_overlay_medium">#99000000</color>  <!-- 60% 黑 -->
+    <color name="neo_overlay_light">#66000000</color>   <!-- 40% 黑 -->
+    <color name="neo_glass">#B3181818</color>           <!-- 玻璃面板 -->
+
+    <!-- ──── 兼容别名（保留旧名避免编译错误） ──── -->
+    <color name="primary">@color/neo_accent</color>
+    <color name="purple_500">@color/neo_accent</color>
+    <color name="purple_700">@color/neo_accent_dim</color>
+    <color name="teal_200">@color/neo_accent</color>
+    <color name="on_primary">@color/neo_bg</color>
+    <color name="primary_container">@color/neo_accent_glow</color>
+    <color name="secondary">@color/neo_accent</color>
+    <color name="black">@color/neo_bg</color>
+    <color name="white">@color/neo_text_primary</color>
+
+    <!-- ──── 设置界面专用 ──── -->
+    <color name="settings_bg">#111111</color>
+    <color name="settings_surface">#1A1A1A</color>
+    <color name="settings_surface_variant">#222222</color>
+    <color name="settings_text_primary">#E8E8E8</color>
+    <color name="settings_text_secondary">#707070</color>
+    <color name="settings_text_hint">#4A4A4A</color>
+    <color name="settings_divider">#1F1F1F</color>
+    <color name="settings_accent">@color/neo_accent</color>
+    <color name="settings_category_title">@color/neo_accent</color>
+</resources>

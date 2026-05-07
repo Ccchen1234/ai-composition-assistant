@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    性冷淡风格：拍照按钮内圆
+    改为细描边小圆，而非实心填充——简洁克制
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <stroke
+        android:width="0.75dp"
+        android:color="#505050" />
+    <size
+        android:width="54dp"
+        android:height="54dp" />
+</shape>

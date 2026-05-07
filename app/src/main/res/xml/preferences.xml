@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="8dp">
+
+    <!-- ====== 千问 AI 大模型 ====== -->
+    <PreferenceCategory
+        android:title="千问 AI 大模型">
+
+        <SwitchPreference
+            android:key="ai_guidance_enabled"
+            android:title="启用 AI 构图指导"
+            android:summary="Qwen3-VL-Flash 实时分析画面，给出专业构图指令"
+            android:defaultValue="false" />
+
+        <EditTextPreference
+            android:key="openai_api_key"
+            android:title="DashScope API Key"
+            android:summary="从 dashscope.console.aliyun.com 获取（AES-256 加密存储）"
+            android:dialogTitle="输入 API Key"
+            android:inputType="text" />
+
+        <EditTextPreference
+            android:key="openai_base_url"
+            android:title="API Base URL"
+            android:summary="默认 DashScope 兼容地址"
+            android:dialogTitle="Base URL"
+            android:defaultValue="https://dashscope.aliyuncs.com/compatible-mode/v1" />
+
+        <EditTextPreference
+            android:key="openai_model"
+            android:title="模型名称"
+            android:summary="默认 qwen3-vl-flash"
+            android:dialogTitle="Model Name"
+            android:defaultValue="qwen3-vl-flash" />
+
+    </PreferenceCategory>
+
+    <!-- ====== AI 策略管理 ====== -->
+    <PreferenceCategory
+        android:title="AI 策略管理">
+
+        <EditTextPreference
+            android:key="strategy_url"
+            android:title="策略 JSON URL"
+            android:summary="远程策略配置地址（留空使用本地默认）"
+            android:dialogTitle="策略配置 URL"
+            android:inputType="textUri" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="AI 检测">
+
+        <SwitchPreference
+            android:key="body_detection_enabled"
+            android:title="主体完整性检测"
+            android:summary="开启后自动检测主体是否完整入镜"
+            android:defaultValue="true" />
+
+        <SwitchPreference
+            android:key="pose_guidance_enabled"
+            android:title="姿势引导"
+            android:summary="开启后人像检测肩膀倾斜/姿势提示"
+            android:defaultValue="true" />
+
+        <SwitchPreference
+            android:key="face_guidance_enabled"
+            android:title="人脸表情引导"
+            android:summary="开启后检测微笑/闭眼/角度"
+            android:defaultValue="true" />
+
+        <SwitchPreference
+            android:key="composition_pitfall_enabled"
+            android:title="构图避坑提醒"
+            android:summary="开启后检测头顶树干/边缘裁切等高级避坑"
+            android:defaultValue="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="交互反馈">
+
+        <SwitchPreference
+            android:key="haptic_enabled"
+            android:title="磁吸震动反馈"
+            android:summary="红米 K80 Pro 线性马达磁吸质感"
+            android:defaultValue="true" />
+
+        <SwitchPreference
+            android:key="positive_encouragement_enabled"
+            android:title="正向鼓励"
+            android:summary="拍摄中实时赞美你的构图"
+            android:defaultValue="true" />
+
+        <SeekBarPreference
+            android:key="prompt_interval_ms"
+            android:title="提示语间隔"
+            android:summary="ms 调节提示语最小间隔，避免刷屏"
+            android:defaultValue="1500"
+            android:min="500"
+            android:max="2000" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="自动快门">
+
+        <SwitchPreference
+            android:key="auto_shutter_enabled"
+            android:title="自动快门"
+            android:summary="主体到位稳定后自动拍照（含锁定防误触）"
+            android:defaultValue="true" />
+
+        <SwitchPreference
+            android:key="countdown_shutter_enabled"
+            android:title="倒计时拍照"
+            android:summary="构图完美锁定后等待 3 秒自动拍摄"
+            android:defaultValue="false" />
+
+        <SwitchPreference
+            android:key="silent_shutter_enabled"
+            android:title="静音拍照"
+            android:summary="开启后自动快门不响快门音"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="视觉自定义">
+
+        <ListPreference
+            android:key="grid_color"
+            android:title="网格线颜色"
+            android:summary="选择你喜欢的网格线颜色"
+            android:defaultValue="green"
+            android:entries="@array/grid_color_entries"
+            android:entryValues="@array/grid_color_values" />
+
+        <SeekBarPreference
+            android:key="grid_alpha"
+            android:title="网格透明度"
+            android:summary="调节透明度避免遮挡主体"
+            android:defaultValue="50"
+            android:min="10"
+            android:max="80" />
+
+        <SeekBarPreference
+            android:key="grid_width"
+            android:title="网格线条粗细"
+            android:summary="px 调节线条宽度"
+            android:defaultValue="2"
+            android:min="1"
+            android:max="4" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

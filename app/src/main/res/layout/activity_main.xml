@@ -83,7 +83,29 @@
             android:src="@android:drawable/ic_menu_preferences"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="设置"
-            android:tint="@color/neo_icon" />
+            android:tint="@color/neo_icon"
+            android:layout_marginEnd="4dp" />
+
+        <!-- 对焦模式切换：AF/AF -->
+        <FrameLayout
+            android:id="@+id/focusModeToggle"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="对焦模式切换"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:id="@+id/focusModeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="AF"
+                android:textColor="@color/neo_accent"
+                android:textSize="12sp"
+                android:alpha="0.5"
+                android:letterSpacing="0.05" />
+        </FrameLayout>
 
     </LinearLayout>
 
@@ -211,7 +233,7 @@
         android:paddingVertical="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintTop_toBottomOf="@id/topBar"
-        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintBottom_toTopOf="@id/focusControlContainer"
         app:layout_constraintEnd_toEndOf="parent">
 
         <!-- T (远摄 / 放大) -->
@@ -257,6 +279,55 @@
             android:textSize="12sp"
             android:layout_marginTop="4dp"
             android:alpha="0.9" />
+
+    </LinearLayout>
+
+    <!-- ───────────────────────────────────────────
+         右侧垂直手动对焦条（默认隐藏，切换到 MF 模式后显示）
+         ─────────────────────────────────────────── -->
+    <LinearLayout
+        android:id="@+id/focusControlContainer"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingVertical="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- 近（Near） -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="近"
+            android:textColor="@color/neo_text_hint"
+            android:textSize="11sp"
+            android:alpha="0.7" />
+
+        <!-- 对焦条 -->
+        <SeekBar
+            android:id="@+id/focusSeekBar"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:max="100"
+            android:progress="50"
+            android:progressTint="@color/neo_accent"
+            android:thumbTint="@color/neo_accent"
+            android:rotation="270"
+            android:layout_marginStart="-40dp"
+            android:contentDescription="手动对焦" />
+
+        <!-- 远（Far） -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="远"
+            android:textColor="@color/neo_text_hint"
+            android:textSize="11sp"
+            android:alpha="0.7" />
 
     </LinearLayout>
 
@@ -306,6 +377,27 @@
                 android:textColor="@color/neo_text_hint"
                 android:textSize="11sp"
                 android:paddingEnd="8dp" />
+
+            <!-- 低灵敏度 -->
+            <View
+                android:id="@+id/sensitivityLow"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- 中灵敏度 -->
+            <View
+                android:id="@+id/sensitivityMedium"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- 高灵敏度 -->
+            <View
+                android:id="@+id/sensitivityHigh"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <View
                 android:layout_width="0dp"

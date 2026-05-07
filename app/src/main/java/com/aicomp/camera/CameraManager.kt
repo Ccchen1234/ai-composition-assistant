@@ -79,6 +79,12 @@ class CameraManager(
         fun onCameraError(message: String)
     }
 
+    /** 对焦操作结果回调 */
+    interface FocusCallback {
+        fun onFocusStarted()
+        fun onFocusResult(success: Boolean, x: Float, y: Float)
+    }
+
     var frameCallback: FrameCallback? = null
 
     // ──── CameraX ────
@@ -200,22 +206,53 @@ class CameraManager(
         return (range?.lower ?: -3)..(range?.upper ?: 3)
     }
 
-    fun focusAt(x: Float, y: Float) {
+    /**
+     * 点击对焦（自动对焦到指定点）
+     * @param x 触摸点 x（屏幕坐标）
+     * @param y 触摸点 y（屏幕坐标）
+     * @param callback 对焦结果回调（可 null）
+     */
+    fun focusAt(x: Float, y: Float, callback: FocusCallback? = null) {
         val cam = camera ?: return
         val factory = previewView.meteringPointFactory
         val point = factory.createPoint(x, y)
         val action = cam.cameraControl.startFocusAndMetering(
             FocusMeteringAction.Builder(point)
-                .setAutoCancelDuration(3, TimeUnit.SECONDS)
+                .setAutoCancelDuration(5, TimeUnit.SECONDS)
                 .build()
         )
+        callback?.onFocusStarted()
         action.addListener({
             try {
-                action.get()
+                val result = action.get()
+                val success = result.isFocusSuccessful
+                callback?.onFocusResult(success, x, y)
             } catch (e: Exception) {
-                Log.w(TAG, "Focus failed", e)
+                Log.w(TAG, "Focus check failed: ${e.message}")
+                callback?.onFocusResult(false, x, y)
             }
         }, ContextCompat.getMainExecutor(context))
+    }
+
+    /**
+     * 设置手动对焦距离（线性插值）
+     * @param distance 0.0 = 最近，1.0 = 最远（无穷远）
+     * 使用 CameraX setLinearZoom，大部分设备支持此 API
+     */
+    fun setManualFocusDistance(distance: Float) {
+        val cam = camera ?: return
+        val clampedDist = distance.coerceIn(0f, 1f)
+        cam.cameraControl.setLinearZoom(clampedDist)
+            .addListener({
+                Log.d(TAG, "Manual focus set to $clampedDist")
+            }, ContextCompat.getMainExecutor(context))
+    }
+
+    /**
+     * 取消所有正在进行的对焦操作
+     */
+    fun cancelFocus() {
+        camera?.cameraControl?.cancelFocusAndMetering()
     }
 
     // ═══════════════════════════════════════════

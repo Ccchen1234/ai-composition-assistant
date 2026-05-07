@@ -12,6 +12,7 @@ import com.aicomp.HapticFeedbackManager
 import com.aicomp.ai.AIGuidanceManager
 import com.aicomp.ai.AICompositionResult
 import com.aicomp.ai.AICommand
+import com.aicomp.ai.AICropZone
 import com.aicomp.ai.CommandDispatcher
 import com.aicomp.sensor.DeviceStabilityTracker
 import com.aicomp.settings.ConfigManager
@@ -61,6 +62,9 @@ class CompositionViewModel(application: Application) : AndroidViewModel(applicat
     // ──── CameraManager 回调引用（由 MainActivity 设置） ────
     var cameraControlCallback: CameraControlCallback? = null
 
+    // ──── 手动对焦回调引用（由 MainActivity 设置） ────
+    var manualFocusCallback: ManualFocusCallback? = null
+
     // ──── 上一次构图结果（用于 EXIF 写入） ────
     var lastCompositionResult: CompositionRuleEngine.CompositionResult? = null
         private set
@@ -74,6 +78,13 @@ class CompositionViewModel(application: Application) : AndroidViewModel(applicat
     interface CameraControlCallback {
         fun setZoomRatio(ratio: Float)
         fun setExposureCompensationIndex(index: Int)
+    }
+
+    /**
+     * 手动对焦回调接口（由 MainActivity 桥接 CameraManager）
+     */
+    interface ManualFocusCallback {
+        fun setManualFocusDistance(distance: Float)
     }
 
     init {
@@ -285,6 +296,53 @@ class CompositionViewModel(application: Application) : AndroidViewModel(applicat
 
     fun getAIManager(): AIGuidanceManager = aiGuidanceManager
 
+    // ═══════════════════════════════════════════
+    //  对焦操作入口
+    // ═══════════════════════════════════════════
+
+    /**
+     * 切换手动对焦模式
+     */
+    fun toggleManualFocus() {
+        _uiState.update { it.copy(manualFocusEnabled = !it.manualFocusEnabled) }
+    }
+
+    /**
+     * 设置手动对焦距离
+     * @param distance 0.0（近）~ 1.0（远）
+     */
+    fun setManualFocusDistance(distance: Float) {
+        val clamped = distance.coerceIn(0f, 1f)
+        _uiState.update { it.copy(manualFocusDistance = clamped) }
+        if (_uiState.value.manualFocusEnabled) {
+            manualFocusCallback?.setManualFocusDistance(clamped)
+        }
+    }
+
+    /**
+     * 更新对焦指示器状态
+     * @param x 归一化 x (0-1)
+     * @param y 归一化 y (0-1)
+     * @param success 对焦是否成功
+     */
+    fun setFocusIndicator(x: Float, y: Float, success: Boolean) {
+        _uiState.update {
+            it.copy(focusIndicator = CompositionUiState.FocusIndicator(x, y, success))
+        }
+        // 3 秒后自动清除指示器
+        viewModelScope.launch {
+            kotlinx.coroutines.delay(3000)
+            clearFocusIndicator()
+        }
+    }
+
+    /**
+     * 清除对焦指示器
+     */
+    fun clearFocusIndicator() {
+        _uiState.update { it.copy(focusIndicator = null) }
+    }
+
     // ──── 稳定度追踪器生命周期 ────
 
     fun startStabilityTracking() = stabilityTracker.start()
@@ -340,8 +398,8 @@ class CompositionViewModel(application: Application) : AndroidViewModel(applicat
     //  CommandDispatcher.Callbacks 实现
     // ═══════════════════════════════════════════
 
-    override fun setZoomRatio(ratio: Float) {
-        // 更新 UI 状态中的缩放值
+    override fun applyZoomCommand(ratio: Float) {
+        // 更新 UI 状态中的缩放值（AI 指令中的 zoom 值已在 CommandDispatcher 中 clamp）
         _uiState.update { it.copy(currentZoomRatio = ratio) }
         cameraControlCallback?.setZoomRatio(ratio)
     }
@@ -376,7 +434,7 @@ class CompositionViewModel(application: Application) : AndroidViewModel(applicat
         _uiState.update { it.copy(aiShutterReady = ready) }
     }
 
-    override fun setCropZone(zone: AICommand.AICropZone?) {
+    override fun setCropZone(zone: AICropZone?) {
         val uiZone = zone?.let {
             CompositionUiState.CropZone(it.x1, it.y1, it.x2, it.y2, it.message)
         }

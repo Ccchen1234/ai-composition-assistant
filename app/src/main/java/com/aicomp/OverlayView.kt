@@ -11,6 +11,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import com.aicomp.viewmodel.CompositionUiState.CropZone
+import com.aicomp.viewmodel.CompositionUiState.FocusIndicator
 
 /**
  * 构图叠加层
@@ -122,6 +123,15 @@ class OverlayView @JvmOverloads constructor(
         style = Paint.Style.FILL
     }
 
+    // 对焦指示器画笔
+    private val focusRingPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = 1.5f
+    }
+    private val focusDotPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+    }
+
     // ====== 状态 ======
     private var subjectRect = RectF()
     private var recommendedBox: CompositionBoxEngine.CompositionBox? = null
@@ -144,6 +154,16 @@ class OverlayView @JvmOverloads constructor(
     private var cropZone: CropZone? = null
     private var animatedCropRect: RectF? = null
     private var cropAnimator: ValueAnimator? = null
+
+    // 对焦指示器
+    private var focusIndicator: FocusIndicator? = null
+    private var focusIndicatorX: Float = 0f
+    private var focusIndicatorY: Float = 0f
+    private var focusIndicatorAlpha: Float = 0f  // 0-255
+    private var focusRingRadius: Float = 30f
+    private var focusIndicatorSuccess: Boolean = true
+    private var focusAnimator: ValueAnimator? = null
+    private var focusRingPulseAnimator: ValueAnimator? = null
 
     // 动画状态
     private var animatedBox: RectF? = null
@@ -215,6 +235,73 @@ class OverlayView @JvmOverloads constructor(
             animateCropFadeOut()
         }
         invalidate()
+    }
+
+    /**
+     * 设置点击对焦指示器（带入场动画）
+     * @param indicator 归一化坐标的指示器，null 清除
+     */
+    fun setFocusIndicator(indicator: FocusIndicator?) {
+        focusIndicator = indicator
+        if (indicator != null && width > 0 && height > 0) {
+            // 转换为屏幕坐标
+            val targetX = indicator.x * width
+            val targetY = indicator.y * height
+            focusIndicatorSuccess = indicator.success
+            animateFocusIndicatorTo(targetX, targetY)
+        } else {
+            animateFocusFadeOut()
+        }
+    }
+
+    private fun animateFocusIndicatorTo(targetX: Float, targetY: Float) {
+        focusAnimator?.cancel()
+        focusRingPulseAnimator?.cancel()
+        val startX = focusIndicatorX
+        val startY = focusIndicatorY
+        focusAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 200
+            interpolator = DecelerateInterpolator()
+            addUpdateListener { anim ->
+                val f = anim.animatedFraction
+                focusIndicatorX = startX + (targetX - startX) * f
+                focusIndicatorY = startY + (targetY - startY) * f
+                focusIndicatorAlpha = (f * 255f).toInt().coerceIn(0, 255).toFloat()
+                focusRingRadius = 40f - f * 20f  // 从大到小
+                invalidate()
+            }
+            start()
+        }
+        // 脉冲动画（从紧到松然后保持）
+        focusRingPulseAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 400
+            interpolator = DecelerateInterpolator()
+            addUpdateListener { anim ->
+                val f = anim.animatedFraction
+                focusRingRadius = 20f + (1f - f) * 8f  // 20→28→20
+                invalidate()
+            }
+            start()
+        }
+    }
+
+    private fun animateFocusFadeOut() {
+        focusAnimator?.cancel()
+        focusRingPulseAnimator?.cancel()
+        focusAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 300
+            addUpdateListener { anim ->
+                focusIndicatorAlpha = ((1f - anim.animatedFraction) * 255f).toInt().coerceIn(0, 255).toFloat()
+                invalidate()
+            }
+            addListener(object : android.animation.AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: android.animation.Animator) {
+                    focusIndicator = null
+                    invalidate()
+                }
+            })
+            start()
+        }
     }
 
     private fun animateCropTo(target: RectF) {
@@ -428,6 +515,11 @@ class OverlayView @JvmOverloads constructor(
         animatedCropRect?.let { rect ->
             drawCropZone(canvas, rect, cropZone)
         }
+
+        // 8. 点击对焦指示器
+        if (focusIndicatorAlpha > 0 && focusIndicator != null) {
+            drawFocusIndicator(canvas)
+        }
     }
 
     private fun drawGrid(canvas: Canvas, w: Float, h: Float) {
@@ -626,6 +718,49 @@ class OverlayView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * 绘制点击对焦指示器：方角环 + 中心点
+     */
+    private fun drawFocusIndicator(canvas: Canvas) {
+        val alpha = focusIndicatorAlpha.coerceIn(0f, 255f).toInt()
+        val cx = focusIndicatorX
+        val cy = focusIndicatorY
+        val r = focusRingRadius
+
+        // 颜色：成功=淡青色，失败=暗珊瑚
+        val ringColor = if (focusIndicatorSuccess) {
+            Color.parseColor("#5AC8C8")
+        } else {
+            Color.parseColor("#B06060")
+        }
+
+        focusRingPaint.color = ringColor
+        focusRingPaint.alpha = alpha
+        focusDotPaint.color = ringColor
+        focusDotPaint.alpha = alpha
+
+        // 方角环（正方形）
+        canvas.drawRoundRect(
+            cx - r, cy - r,
+            cx + r, cy + r,
+            4f, 4f,
+            focusRingPaint
+        )
+
+        // 内部加一圈更细的
+        focusRingPaint.strokeWidth = 0.8f
+        canvas.drawRoundRect(
+            cx - r + 4f, cy - r + 4f,
+            cx + r - 4f, cy + r - 4f,
+            3f, 3f,
+            focusRingPaint
+        )
+        focusRingPaint.strokeWidth = 1.5f
+
+        // 中心小方点
+        canvas.drawRect(cx - 2f, cy - 2f, cx + 2f, cy + 2f, focusDotPaint)
+    }
+
     private fun drawCornerMarks(canvas: Canvas, rect: RectF, color: Int) {
         // 性冷淡：极细角标（1dp），不抢画面
         val markPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -655,5 +790,7 @@ class OverlayView @JvmOverloads constructor(
         ringAnimator?.cancel()
         guideAnimator?.cancel()
         cropAnimator?.cancel()
+        focusAnimator?.cancel()
+        focusRingPulseAnimator?.cancel()
     }
 }

@@ -90,6 +90,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var zoomSeekBar: SeekBar
     private lateinit var zoomRatioText: TextView
 
+    // 手动对焦 UI
+    private lateinit var focusModeToggle: ImageButton
+    private lateinit var focusControlContainer: LinearLayout
+    private lateinit var focusSeekBar: SeekBar
+    private lateinit var focusModeLabel: TextView
+
     // ──── 权限 ────
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -162,6 +168,13 @@ class MainActivity : AppCompatActivity() {
 
             override fun setExposureCompensationIndex(index: Int) {
                 cameraManager.setExposureCompensationIndex(index)
+            }
+        }
+
+        // 桥接：ViewModel → CameraManager（手动对焦回调）
+        viewModel.manualFocusCallback = object : CompositionViewModel.ManualFocusCallback {
+            override fun setManualFocusDistance(distance: Float) {
+                cameraManager.setManualFocusDistance(distance)
             }
         }
 
@@ -280,6 +293,14 @@ class MainActivity : AppCompatActivity() {
 
         // 裁剪区域（AI 推荐）
         overlayView.setCropZone(state.cropZone)
+
+        // 对焦指示器
+        overlayView.setFocusIndicator(state.focusIndicator)
+
+        // 手动对焦模式 UI
+        focusModeLabel.text = if (state.manualFocusEnabled) "M" else "A"
+        focusModeLabel.alpha = if (state.manualFocusEnabled) 1.0f else 0.5f
+        focusControlContainer.visibility = if (state.manualFocusEnabled) View.VISIBLE else View.INVISIBLE
 
         // 缩放文字（如果 AI 驱动了缩放，实时更新滑动条）
         zoomRatioText.text = String.format("%.1fx", state.currentZoomRatio)
@@ -433,6 +454,11 @@ class MainActivity : AppCompatActivity() {
         zoomControlContainer = findViewById(R.id.zoomControlContainer)
         zoomSeekBar = findViewById(R.id.zoomSeekBar)
         zoomRatioText = findViewById(R.id.zoomRatioText)
+
+        focusModeToggle = findViewById(R.id.focusModeToggle)
+        focusControlContainer = findViewById(R.id.focusControlContainer)
+        focusSeekBar = findViewById(R.id.focusSeekBar)
+        focusModeLabel = findViewById(R.id.focusModeLabel)
     }
 
     private fun setupListeners() {
@@ -489,15 +515,58 @@ class MainActivity : AppCompatActivity() {
             if (ConfigManager.isHapticEnabled) HapticFeedbackManager.buttonClick()
         }
 
-        // 点击对焦
+        // 点击对焦（带视觉反馈 + 对焦模式切换）
         previewView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 val cam = if (::cameraManager.isInitialized) cameraManager else return@setOnTouchListener false
-                cam.focusAt(event.x, event.y)
-                if (ConfigManager.isHapticEnabled) HapticFeedbackManager.focusSuccess()
+
+                // 如果在手动对焦模式下：禁止自动对焦，直接操作 slider
+                if (viewModel.stateValue.manualFocusEnabled) {
+                    // 不响应点击对焦
+                    return@setOnTouchListener false
+                }
+
+                // 归一化触摸坐标 → ViewModel → OverlayView 显示
+                val normX = (event.x / previewView.width).coerceIn(0f, 1f)
+                val normY = (event.y / previewView.height).coerceIn(0f, 1f)
+                val successCallback = object : CameraManager.FocusCallback {
+                    override fun onFocusStarted() {
+                        runOnUiThread {
+                            overlayView.setFocusIndicator(
+                                CompositionUiState.FocusIndicator(normX, normY, true)
+                            )
+                        }
+                    }
+                    override fun onFocusResult(success: Boolean, x: Float, y: Float) {
+                        runOnUiThread {
+                            viewModel.setFocusIndicator(normX, normY, success)
+                            if (ConfigManager.isHapticEnabled) {
+                                if (success) HapticFeedbackManager.focusSuccess()
+                            }
+                        }
+                    }
+                }
+                cam.focusAt(event.x, event.y, successCallback)
             }
-            false
+            true  // 返回 true 消费事件，避免传递给父视图
         }
+
+        // 手动对焦模式切换
+        focusModeToggle.setOnClickListener {
+            viewModel.toggleManualFocus()
+            if (ConfigManager.isHapticEnabled) HapticFeedbackManager.buttonClick()
+        }
+
+        // 手动对焦滑块（0=近，100=远）
+        focusSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                if (!fromUser) return
+                val distance = progress / 100f
+                viewModel.setManualFocusDistance(distance)
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
 
         // 缩放控制
         zoomSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {

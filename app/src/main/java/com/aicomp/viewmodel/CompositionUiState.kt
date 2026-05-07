@@ -47,6 +47,14 @@ data class CompositionUiState(
     val aiShutterReady: Boolean = false,
     val commandModeEnabled: Boolean = false,
 
+    // ============ 对焦状态 ============
+    /** 是否启用手动对焦模式，false=自动对焦 */
+    val manualFocusEnabled: Boolean = false,
+    /** 手动对焦距离 0.0(近)~1.0(远) */
+    val manualFocusDistance: Float = 0.5f,
+    /** 点击对焦指示器坐标（归一化 0-1），null=无显示 */
+    val focusIndicator: FocusIndicator? = null,
+
     // ============ 裁剪 / 缩放状态 ============
     /** 当前相机缩放倍率 */
     val currentZoomRatio: Float = 1f,
@@ -72,6 +80,18 @@ data class CompositionUiState(
         fun isValid() = x2 > x1 && y2 > y1 &&
                 x1 >= 0f && y1 >= 0f && x2 <= 1f && y2 <= 1f
     }
+
+    /**
+     * 点击对焦指示器
+     * @param x 归一化 x 坐标 (0-1)
+     * @param y 归一化 y 坐标 (0-1)
+     * @param success 对焦是否成功（成功=绿色圆环，失败=红色）
+     */
+    data class FocusIndicator(
+        val x: Float,
+        val y: Float,
+        val success: Boolean = true
+    )
 
     enum class AIAssistState {
         IDLE,           // 空闲，等待用户点击

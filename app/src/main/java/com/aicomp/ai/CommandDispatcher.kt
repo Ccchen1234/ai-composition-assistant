@@ -26,8 +26,8 @@ object CommandDispatcher {
      * 由 ViewModel 实现，桥接到各个子系统
      */
     interface Callbacks {
-        /** 相机缩放控制 */
-        fun setZoomRatio(ratio: Float)
+        /** 相机缩放控制（由 AI 指令驱动） */
+        fun applyZoomCommand(ratio: Float)
 
         /** 曝光补偿控制 */
         fun setExposureCompensationIndex(index: Int)
@@ -112,7 +112,7 @@ object CommandDispatcher {
         command.cameraZoom?.let { zoom ->
             val clampedZoom = zoom.coerceIn(1.0f, 10.0f)
             Log.d(TAG, "Setting zoom ratio: $clampedZoom")
-            callbacks.setZoomRatio(clampedZoom)
+            callbacks.applyZoomCommand(clampedZoom)
         }
 
         command.cameraEv?.let { ev ->

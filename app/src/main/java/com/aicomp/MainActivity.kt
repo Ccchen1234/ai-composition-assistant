@@ -430,7 +430,7 @@ class MainActivity : AppCompatActivity() {
         guidanceText = findViewById(R.id.guidanceText)
         sceneHintText = findViewById(R.id.sceneHintText)
         versionLabel = findViewById(R.id.versionLabel)
-        versionLabel.text = "v${BuildConfig.VERSION_NAME}(${BuildConfig.VERSION_CODE})"
+        versionLabel?.text = "v${BuildConfig.VERSION_NAME}(${BuildConfig.VERSION_CODE})"
         arrowIndicator = findViewById(R.id.arrowIndicator)
         captureButton = findViewById(R.id.captureButton)
         cameraSwitch = findViewById(R.id.cameraSwitch)

@@ -10,6 +10,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import com.aicomp.viewmodel.CompositionUiState.CropZone
 
 /**
  * 构图叠加层
@@ -95,6 +96,32 @@ class OverlayView @JvmOverloads constructor(
     }
     private val guideArrowPath = Path()
 
+    // 裁剪区域遮罩画笔
+    private val cropMaskPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.parseColor("#99000000")
+        style = Paint.Style.FILL
+    }
+    private val cropBorderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.parseColor("#5AC8C8")
+        style = Paint.Style.STROKE
+        strokeWidth = 1.5f
+        alpha = 220
+    }
+    private val cropCornerPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.parseColor("#5AC8C8")
+        style = Paint.Style.STROKE
+        strokeWidth = 2.5f
+    }
+    private val cropTextPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.parseColor("#E0FFFFFF")
+        textSize = 24f
+        textAlign = Paint.Align.CENTER
+    }
+    private val cropTextBgPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.parseColor("#CC1A1A1A")
+        style = Paint.Style.FILL
+    }
+
     // ====== 状态 ======
     private var subjectRect = RectF()
     private var recommendedBox: CompositionBoxEngine.CompositionBox? = null
@@ -112,6 +139,11 @@ class OverlayView @JvmOverloads constructor(
     private var animatedGuideDy: Float = 0f
     private var guideAlpha: Float = 0f  // 0-255
     private var guideAnimator: ValueAnimator? = null
+
+    // 裁剪区域
+    private var cropZone: CropZone? = null
+    private var animatedCropRect: RectF? = null
+    private var cropAnimator: ValueAnimator? = null
 
     // 动画状态
     private var animatedBox: RectF? = null
@@ -163,6 +195,51 @@ class OverlayView @JvmOverloads constructor(
         guideDy = 0f
         guideMessage = ""
         animateGuideFadeOut()
+    }
+
+    /**
+     * 设置 AI 推荐裁剪区域（带动画）
+     * @param zone 归一化裁剪区，null 清除
+     */
+    fun setCropZone(zone: CropZone?) {
+        cropZone = zone
+        if (zone != null && zone.isValid() && width > 0 && height > 0) {
+            val targetRect = RectF(
+                zone.x1 * width,
+                zone.y1 * height,
+                zone.x2 * width,
+                zone.y2 * height
+            )
+            animateCropTo(targetRect)
+        } else {
+            animateCropFadeOut()
+        }
+        invalidate()
+    }
+
+    private fun animateCropTo(target: RectF) {
+        cropAnimator?.cancel()
+        val start = animatedCropRect ?: target
+        cropAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 300
+            interpolator = DecelerateInterpolator()
+            addUpdateListener { anim ->
+                val f = anim.animatedFraction
+                animatedCropRect = RectF(
+                    start.left + (target.left - start.left) * f,
+                    start.top + (target.top - start.top) * f,
+                    start.right + (target.right - start.right) * f,
+                    start.bottom + (target.bottom - start.bottom) * f
+                )
+                invalidate()
+            }
+            start()
+        }
+    }
+
+    private fun animateCropFadeOut() {
+        cropAnimator?.cancel()
+        animatedCropRect = null
     }
 
     private fun animateGuideTo(targetDx: Float, targetDy: Float, targetAlpha: Float) {
@@ -346,6 +423,11 @@ class OverlayView @JvmOverloads constructor(
         if (guideAlpha > 1f) {
             drawGuideArrows(canvas, w, h)
         }
+
+        // 7. AI 裁剪区域
+        animatedCropRect?.let { rect ->
+            drawCropZone(canvas, rect, cropZone)
+        }
     }
 
     private fun drawGrid(canvas: Canvas, w: Float, h: Float) {
@@ -495,6 +577,55 @@ class OverlayView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * 绘制 AI 裁剪区域：半透明遮罩 + 青色边框 + 角标
+     */
+    private fun drawCropZone(canvas: Canvas, rect: RectF, zone: CropZone?) {
+        val w = width.toFloat()
+        val h = height.toFloat()
+
+        // 外部遮罩（上下左右四块）
+        canvas.drawRect(0f, 0f, w, rect.top, cropMaskPaint)         // 上
+        canvas.drawRect(0f, rect.bottom, w, h, cropMaskPaint)     // 下
+        canvas.drawRect(0f, rect.top, rect.left, rect.bottom, cropMaskPaint) // 左
+        canvas.drawRect(rect.right, rect.top, w, rect.bottom, cropMaskPaint) // 右
+
+        // 青色边框
+        canvas.drawRect(rect, cropBorderPaint)
+
+        // 四角粗线标记
+        val cornerLen = 16f
+        canvas.drawLine(rect.left, rect.top, rect.left + cornerLen, rect.top, cropCornerPaint)
+        canvas.drawLine(rect.left, rect.top, rect.left, rect.top + cornerLen, cropCornerPaint)
+
+        canvas.drawLine(rect.right, rect.top, rect.right - cornerLen, rect.top, cropCornerPaint)
+        canvas.drawLine(rect.right, rect.top, rect.right, rect.top + cornerLen, cropCornerPaint)
+
+        canvas.drawLine(rect.left, rect.bottom, rect.left + cornerLen, rect.bottom, cropCornerPaint)
+        canvas.drawLine(rect.left, rect.bottom, rect.left, rect.bottom - cornerLen, cropCornerPaint)
+
+        canvas.drawLine(rect.right, rect.bottom, rect.right - cornerLen, rect.bottom, cropCornerPaint)
+        canvas.drawLine(rect.right, rect.bottom, rect.right, rect.bottom - cornerLen, cropCornerPaint)
+
+        // 裁剪建议文字
+        zone?.message?.takeIf { it.isNotBlank() }?.let { msg ->
+            val textY = rect.top - 10f
+            val textW = cropTextPaint.measureText(msg)
+            val pad = 12f
+            if (textY > 40f) {
+                canvas.drawRoundRect(
+                    rect.centerX() - textW / 2 - pad,
+                    textY - 22f,
+                    rect.centerX() + textW / 2 + pad,
+                    textY + 8f,
+                    4f, 4f,
+                    cropTextBgPaint
+                )
+                canvas.drawText(msg, rect.centerX(), textY, cropTextPaint)
+            }
+        }
+    }
+
     private fun drawCornerMarks(canvas: Canvas, rect: RectF, color: Int) {
         // 性冷淡：极细角标（1dp），不抢画面
         val markPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -523,5 +654,6 @@ class OverlayView @JvmOverloads constructor(
         boxAnimator?.cancel()
         ringAnimator?.cancel()
         guideAnimator?.cancel()
+        cropAnimator?.cancel()
     }
 }

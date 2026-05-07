@@ -18,6 +18,23 @@ import org.json.JSONObject
  * dx/dy 为像素偏移（正=右/下，负=左/上），50~300 范围
  * |dx|<30 且 |dy|<30 视为已对准
  */
+/**
+ * AI 裁剪区域（归一化 0-1 坐标系）
+ * @param x1,y1 左上角归一化坐标
+ * @param x2,y2 右下角归一化坐标
+ * @param message 裁剪建议文字
+ */
+data class AICropZone(
+    val x1: Float,
+    val y1: Float,
+    val x2: Float,
+    val y2: Float,
+    val message: String = ""
+) {
+    fun isValid() = x2 > x1 && y2 > y1 &&
+            x1 >= 0f && y1 >= 0f && x2 <= 1f && y2 <= 1f
+}
+
 data class AICommand(
     val action: String = "",
     val guideDx: Float = 0f,
@@ -26,6 +43,8 @@ data class AICommand(
     val cameraZoom: Float? = null,
     val cameraEv: Int? = null,
     val shutterState: ShutterState = ShutterState.WAITING,
+    /** AI 推荐裁剪区域（归一化 0-1 坐标） */
+    val cropZone: AICropZone? = null,
     // 保留传统构图分析字段（向后兼容）
     val sceneDescription: String = "",
     val compositionAdvice: String = "",
@@ -79,11 +98,24 @@ data class AICommand(
             val guide = json.optJSONObject("guide")
             val camera = json.optJSONObject("camera")
             val shutterStr = json.optString("shutter", "WAITING")
+            val crop = json.optJSONObject("crop")
 
             // guide 字段兼容：优先 "message"，回退 "msg"
             val guideMessage = guide?.let {
                 it.optString("message", "").ifEmpty { it.optString("msg", "") }
             } ?: ""
+
+            // crop 字段解析
+            val cropZone = crop?.let {
+                val x1 = it.optDouble("x1", Double.NaN).toFloat()
+                val y1 = it.optDouble("y1", Double.NaN).toFloat()
+                val x2 = it.optDouble("x2", Double.NaN).toFloat()
+                val y2 = it.optDouble("y2", Double.NaN).toFloat()
+                val msg = it.optString("message", "").ifEmpty { it.optString("msg", "") }
+                if (!x1.isNaN() && !y1.isNaN() && !x2.isNaN() && !y2.isNaN()) {
+                    AICropZone(x1, y1, x2, y2, msg)
+                } else null
+            }
 
             return AICommand(
                 action = action,
@@ -101,6 +133,7 @@ data class AICommand(
                     "READY" -> ShutterState.READY
                     else -> ShutterState.WAITING
                 },
+                cropZone = cropZone,
                 rawResponse = raw
             )
         }

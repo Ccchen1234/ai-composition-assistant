@@ -40,6 +40,9 @@ object CommandDispatcher {
 
         /** 更新 AI 快门就绪状态 → AutoShutterEngine */
         fun setAIShutterReady(ready: Boolean)
+
+        /** 更新 AI 推荐裁剪区域 → OverlayView */
+        fun setCropZone(zone: AICropZone?)
     }
 
     /**
@@ -76,6 +79,9 @@ object CommandDispatcher {
         if (command.hasShutterCommand) {
             dispatchShutter(command, callbacks)
         }
+
+        // 4. 裁剪区域指令
+        dispatchCrop(command, callbacks)
     }
 
     /**
@@ -132,6 +138,16 @@ object CommandDispatcher {
         if (ready && ConfigManager.isHapticEnabled) {
             HapticFeedbackManager.compositionPerfect()
         }
+    }
+
+    /**
+     * 分发裁剪区域指令
+     * - AI 推荐裁剪区域（归一化坐标） → OverlayView 绘制
+     */
+    private fun dispatchCrop(command: AICommand, callbacks: Callbacks) {
+        val zone = command.cropZone
+        Log.d(TAG, "Crop zone: ${zone?.let { "x1=${it.x1}, y1=${it.y1}, x2=${it.x2}, y2=${it.y2}, msg=${it.message}" } ?: "none"}")
+        callbacks.setCropZone(zone)
     }
 
     /**

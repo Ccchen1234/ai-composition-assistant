@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -83,6 +84,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var aiTechnicalAdvice: TextView
     private lateinit var aiShootingTip: TextView
     private lateinit var aiAdjustmentsContainer: LinearLayout
+
+    // 缩放控制 UI
+    private lateinit var zoomControlContainer: LinearLayout
+    private lateinit var zoomSeekBar: SeekBar
+    private lateinit var zoomRatioText: TextView
 
     // ──── 权限 ────
     private val requestPermissionLauncher = registerForActivityResult(
@@ -272,6 +278,16 @@ class MainActivity : AppCompatActivity() {
             overlayView.clearGuide()
         }
 
+        // 裁剪区域（AI 推荐）
+        overlayView.setCropZone(state.cropZone)
+
+        // 缩放文字（如果 AI 驱动了缩放，实时更新滑动条）
+        zoomRatioText.text = String.format("%.1fx", state.currentZoomRatio)
+        val progress = ((state.currentZoomRatio - 1f) / 0.1f).toInt().coerceIn(0, 40)
+        if (zoomSeekBar.progress != progress) {
+            zoomSeekBar.progress = progress
+        }
+
         // 网格
         overlayView.setShowGrid(state.gridEnabled)
         gridToggle.alpha = if (state.gridEnabled) 1.0f else 0.5f
@@ -323,7 +339,7 @@ class MainActivity : AppCompatActivity() {
                     val tv = TextView(this).apply {
                         markwon.setMarkdown(this, "• $adj")
                         setTextColor(android.graphics.Color.parseColor("#606060"))
-                        textSize = 11f
+                        textSize = 13f
                         setPadding(0, 2, 0, 2)
                     }
                     aiAdjustmentsContainer.addView(tv)
@@ -413,6 +429,10 @@ class MainActivity : AppCompatActivity() {
         aiTechnicalAdvice = findViewById(R.id.aiTechnicalAdvice)
         aiShootingTip = findViewById(R.id.aiShootingTip)
         aiAdjustmentsContainer = findViewById(R.id.aiAdjustmentsContainer)
+
+        zoomControlContainer = findViewById(R.id.zoomControlContainer)
+        zoomSeekBar = findViewById(R.id.zoomSeekBar)
+        zoomRatioText = findViewById(R.id.zoomRatioText)
     }
 
     private fun setupListeners() {
@@ -478,6 +498,19 @@ class MainActivity : AppCompatActivity() {
             }
             false
         }
+
+        // 缩放控制
+        zoomSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                if (!fromUser) return
+                // progress: 0-40 → ratio: 1.0-5.0
+                val ratio = 1f + progress * 0.1f
+                zoomRatioText.text = String.format("%.1fx", ratio)
+                viewModel.setZoomRatio(ratio)
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
 
         // AI 面板手动触发
         aiPanel.setOnClickListener {

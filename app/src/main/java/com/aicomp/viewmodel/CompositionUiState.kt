@@ -47,9 +47,32 @@ data class CompositionUiState(
     val aiShutterReady: Boolean = false,
     val commandModeEnabled: Boolean = false,
 
+    // ============ 裁剪 / 缩放状态 ============
+    /** 当前相机缩放倍率 */
+    val currentZoomRatio: Float = 1f,
+    /** AI 推荐裁剪区域（归一化 0-1 坐标），null 表示无推荐 */
+    val cropZone: CropZone? = null,
+
     // ============ AI 辅助按钮状态 ============
     val aiAssistState: AIAssistState = AIAssistState.IDLE
 ) {
+    /**
+     * AI 推荐裁剪区域
+     * @param x1,y1 左上角归一化坐标 (0-1)
+     * @param x2,y2 右下角归一化坐标 (0-1)
+     * @param message 裁剪建议文字
+     */
+    data class CropZone(
+        val x1: Float,
+        val y1: Float,
+        val x2: Float,
+        val y2: Float,
+        val message: String = ""
+    ) {
+        fun isValid() = x2 > x1 && y2 > y1 &&
+                x1 >= 0f && y1 >= 0f && x2 <= 1f && y2 <= 1f
+    }
+
     enum class AIAssistState {
         IDLE,           // 空闲，等待用户点击
         ANALYZING,      // 正在分析中

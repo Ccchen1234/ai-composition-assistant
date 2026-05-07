@@ -341,6 +341,8 @@ class CompositionViewModel(application: Application) : AndroidViewModel(applicat
     // ═══════════════════════════════════════════
 
     override fun setZoomRatio(ratio: Float) {
+        // 更新 UI 状态中的缩放值
+        _uiState.update { it.copy(currentZoomRatio = ratio) }
         cameraControlCallback?.setZoomRatio(ratio)
     }
 
@@ -372,6 +374,26 @@ class CompositionViewModel(application: Application) : AndroidViewModel(applicat
 
     override fun setAIShutterReady(ready: Boolean) {
         _uiState.update { it.copy(aiShutterReady = ready) }
+    }
+
+    override fun setCropZone(zone: AICommand.AICropZone?) {
+        val uiZone = zone?.let {
+            CompositionUiState.CropZone(it.x1, it.y1, it.x2, it.y2, it.message)
+        }
+        _uiState.update { it.copy(cropZone = uiZone) }
+    }
+
+    // ═══════════════════════════════════════════
+    //  公开 API（供 MainActivity 直接调用）
+    // ═══════════════════════════════════════════
+
+    /**
+     * 手动设置缩放倍率（用户拖动缩放条）
+     */
+    fun setZoomRatio(ratio: Float) {
+        val clamped = ratio.coerceIn(1f, 5f)
+        _uiState.update { it.copy(currentZoomRatio = clamped) }
+        cameraControlCallback?.setZoomRatio(clamped)
     }
 
     // ═══════════════════════════════════════════
